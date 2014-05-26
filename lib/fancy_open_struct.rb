@@ -1,5 +1,5 @@
 require 'ostruct'
-require 'delegate'
+require 'forwardable'
 
 class FancyOpenStruct < OpenStruct
   VERSION = "0.1.1"
