@@ -1,0 +1,63 @@
+= fancy-open-struct
+
+OpenStruct subclass that returns nested (recursive) hash attributes as FancyOpenStructs,
+and also allows usage of Hash methods for getting and setting values.
+
+It allows for hashes within hashes to be called in a chain of methods:
+
+  fos = FancyOpenStruct.new( { :fooa => { :foob => 'fooc' } } )
+
+  fos.fooa.foob # => 'fooc'
+
+Also, if needed, nested hashes can still be accessed as hashes:
+
+  fos.fooa_as_a_hash # { :foob => 'fooc' }
+
+Get and set values either via dot syntax, or hash syntax (Hash keys are handled as Symbols):
+
+  fos.foo = 'bar'
+  fos[:foo] # 'bar'
+
+  fos[:baz] = 'qux'
+  fos.baz # 'qux'
+
+  fos.length # 2
+
+FancyOpenStruct can also optionally recurse across arrays, although you
+have to explicitly enable it:
+
+  h = { :somearr => [ { :name => 'a'}, { :name => 'b' } ] }
+
+  fos = FancyOpenStruct.new(h, :recurse_over_arrays => true )
+
+  fos.somarr[0].name # => 'a'
+  fos.somarr[1].name # => 'b'
+
+== Installation
+
+Available as a gem in rubygems, the default gem repository.
+
+If you use bundler, just throw that in your gemfile :
+
+  gem 'fancy-open-struct'
+
+You may also install the gem manually :
+
+  gem install fancy-open-struct
+
+== Note on Patches/Pull Requests
+ 
+* Fork the project.
+* Make your feature addition or bug fix.
+* Add tests for it. This is important so I don't break it in a
+  future version unintentionally.
+* Commit, do not mess with rakefile, version, or history.
+  (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
+* Send me a pull request. Bonus points for topic branches.
+
+== Copyright
+
+Copyright (c) 2014 Thomas H. Chapin. See LICENSE for details.
+
+This gem is based on the recursive-open-struct gem by William (B.J.) Snow Orvis, which can be found here:
+https://github.com/aetherknight/recursive-open-struct
