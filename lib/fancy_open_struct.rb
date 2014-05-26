@@ -1,9 +1,8 @@
-require 'pry'
 require 'ostruct'
 require 'delegate'
 
 class FancyOpenStruct < OpenStruct
-  VERSION = "0.1"
+  VERSION = "0.1.1"
 
   extend Forwardable
 
