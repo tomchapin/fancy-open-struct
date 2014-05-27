@@ -7,5 +7,4 @@ group :development do
   else
     gem 'simplecov'
   end
-  gem 'pry'
 end
