@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 
-require './lib/fancy_open_struct'
+require './lib/fancy-open-struct'
 
 Gem::Specification.new do |s|
   s.name = "fancy-open-struct"

@@ -2,7 +2,7 @@ require 'ostruct'
 require 'forwardable'
 
 class FancyOpenStruct < OpenStruct
-  VERSION = "0.1.2"
+  VERSION = "0.1.3"
 
   extend Forwardable
 
