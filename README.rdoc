@@ -1,10 +1,10 @@
 = FancyOpenStruct
 
-[![Version](http://allthebadges.io/tomchapin/fancy-open-struct/badge_fury.png)](http://allthebadges.io/tomchapin/fancy-open-struct/badge_fury)
-[![Dependencies](http://allthebadges.io/tomchapin/fancy-open-struct/gemnasium.png)](http://allthebadges.io/tomchapin/fancy-open-struct/gemnasium)
-[![Build Status](http://allthebadges.io/tomchapin/fancy-open-struct/travis.png)](http://allthebadges.io/tomchapin/fancy-open-struct/travis)
-[![Coverage](http://allthebadges.io/tomchapin/fancy-open-struct/coveralls.png)](http://allthebadges.io/tomchapin/fancy-open-struct/coveralls)
-[![Code Climate](http://allthebadges.io/tomchapin/fancy-open-struct/code_climate.png)](http://allthebadges.io/tomchapin/fancy-open-struct/code_climate)
+{<img src="http://allthebadges.io/tomchapin/fancy-open-struct/badge_fury.png" alt="Version" />}[http://allthebadges.io/tomchapin/fancy-open-struct/badge_fury]
+{<img src="http://allthebadges.io/tomchapin/fancy-open-struct/gemnasium.png" alt="Dependencies" />}[http://allthebadges.io/tomchapin/fancy-open-struct/gemnasium]
+{<img src="http://allthebadges.io/tomchapin/fancy-open-struct/travis.png" alt="Build Status" />}[http://allthebadges.io/tomchapin/fancy-open-struct/travis]
+{<img src="http://allthebadges.io/tomchapin/fancy-open-struct/coveralls.png" alt="Coverage" />}[http://allthebadges.io/tomchapin/fancy-open-struct/coveralls]
+{<img src="http://allthebadges.io/tomchapin/fancy-open-struct/code_climate.png" alt="Code Climate" />}[http://allthebadges.io/tomchapin/fancy-open-struct/code_climate]
 
 FancyOpenStruct is a subclass of OpenStruct, and is a variant of RecursiveOpenStruct.
 
