@@ -1,5 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
-require 'fancy_open_struct'
+require 'fancy-open-struct'
 
 describe FancyOpenStruct do
 
