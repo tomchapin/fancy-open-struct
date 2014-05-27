@@ -6,7 +6,7 @@ class FancyOpenStruct < OpenStruct
 
   extend Forwardable
 
-  hash_methods = Hash.instance_methods(false) - (Hash.instance_methods(false) & OpenStruct.instance_methods(false))
+  hash_methods = Hash.instance_methods(false) - (Hash.instance_methods(false) & OpenStruct.instance_methods(false)) - [:[], :[]=]
   def_delegators :@table, *hash_methods
 
   def initialize(hash=nil, args={})
@@ -98,6 +98,12 @@ class FancyOpenStruct < OpenStruct
     end
 
     true
+  end
+
+  def [](*args)
+    len = args.length
+    raise ArgumentError, "wrong number of arguments (#{len} for 1)", caller(1) if len != 1
+    @table[args[0].to_sym]
   end
 
   def []=(*args)

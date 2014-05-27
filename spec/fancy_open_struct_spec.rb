@@ -65,9 +65,10 @@ describe FancyOpenStruct do
       it 'converts string hash keys to symbols' do
         fos = FancyOpenStruct.new
         fos['blah'] = "John Smith"
-        fos['blah'].should == nil
+        fos['blah'].should == "John Smith"
         fos[:blah].should == "John Smith"
         fos.blah.should == "John Smith"
+        fos.to_h['blah'].should == nil
       end
 
       it 'forwards all of the basic Hash methods directly to the @table instance variable' do
