@@ -3,5 +3,3 @@ rvm:
   - "1.9.3"
   - "2.0.0"
   - jruby-19mode # JRuby in 1.9 mode
-env:
-  - CODECLIMATE_REPO_TOKEN=b147cee508e41da6abb1da3e50db4d0e04eea145f0c1b9b8f8adf8ae19c7f37b
