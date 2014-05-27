@@ -1,9 +1,23 @@
-= fancy-open-struct
+= FancyOpenStruct
 
-OpenStruct subclass that returns nested (recursive) hash attributes as FancyOpenStructs,
-and also allows usage of Hash methods for getting and setting values.
+[![Version](http://allthebadges.io/tomchapin/fancy-open-struct/badge_fury.png)](http://allthebadges.io/tomchapin/fancy-open-struct/badge_fury)
+[![Dependencies](http://allthebadges.io/tomchapin/fancy-open-struct/gemnasium.png)](http://allthebadges.io/tomchapin/fancy-open-struct/gemnasium)
+[![Build Status](http://allthebadges.io/tomchapin/fancy-open-struct/travis.png)](http://allthebadges.io/tomchapin/fancy-open-struct/travis)
+[![Coverage](http://allthebadges.io/tomchapin/fancy-open-struct/coveralls.png)](http://allthebadges.io/tomchapin/fancy-open-struct/coveralls)
+[![Code Climate](http://allthebadges.io/tomchapin/fancy-open-struct/code_climate.png)](http://allthebadges.io/tomchapin/fancy-open-struct/code_climate)
 
-It allows for hashes within hashes to be called in a chain of methods:
+FancyOpenStruct is a subclass of OpenStruct, and is a variant of RecursiveOpenStruct.
+
+This gem allows you to convert nested hashes into a structure where keys and values can be
+navigated and modified via dot-syntax, like: foo.bar = :something. This particular gem also adds support
+for the Hash methods you know and love (such as length or merge), and also allows you to access and modify
+the contained data structure the same way that you would handle a normal Hash.
+
+== Usage
+
+FancyOpenStruct allows for hashes within hashes to be called in a chain of methods:
+
+  require 'fancy-open-struct'
 
   fos = FancyOpenStruct.new( { :fooa => { :foob => 'fooc' } } )
 
@@ -14,6 +28,8 @@ Also, if needed, nested hashes can still be accessed as hashes:
   fos.fooa_as_a_hash # { :foob => 'fooc' }
 
 Get and set values either via dot syntax, or hash syntax (Hash keys are handled as Symbols):
+
+  fos = FancyOpenStruct.new
 
   fos.foo = 'bar'
   fos[:foo] # 'bar'
