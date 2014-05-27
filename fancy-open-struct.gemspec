@@ -41,9 +41,15 @@ Gem::Specification.new do |s|
     "README.rdoc"
   ]
 
-  s.add_development_dependency(%q<rspec>, [">= 0"])
-  s.add_development_dependency(%q<bundler>, [">= 0"])
-  s.add_development_dependency(%q<rdoc>, [">= 0"])
-  s.add_development_dependency(%q<pry>, [">= 0"])
+  s.add_development_dependency "bundler", "~> 1.3"
+  s.add_development_dependency "rake", "10.1.0"
+  s.add_development_dependency "rspec", '2.14'
+  s.add_development_dependency "rdoc", '>= 0'
+  s.add_development_dependency "pry", '0.9.12.2'
+  s.add_development_dependency "coveralls", "0.6.7"
+  s.add_development_dependency "guard", "1.8.2"
+  s.add_development_dependency "guard-rspec", "3.0.2"
+  s.add_development_dependency "guard-bundler", "1.0.0"
+  s.add_development_dependency "simplecov-multi", "0.0.1"
 end
 

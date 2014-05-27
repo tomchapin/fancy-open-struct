@@ -3,16 +3,23 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'rspec'
 require 'pry'
 
-if ENV['COVERAGE'] == 'true'
-  require 'simplecov'
-  SimpleCov.start
-end
+require 'simplecov'
+require 'coveralls'
+
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+    SimpleCov::Formatter::HTMLFormatter,
+    Coveralls::SimpleCov::Formatter
+]
+SimpleCov.start
+
+require 'fancy-open-struct'
 
 # Requires supporting files with custom matchers and macfos, etc,
 # in ./support/ and its subdirectories.
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
 RSpec.configure do |config|
-  config.filter_run focus: true
+  config.treat_symbols_as_metadata_keys_with_true_values = true
   config.run_all_when_everything_filtered = true
+  config.filter_run :focus
 end
