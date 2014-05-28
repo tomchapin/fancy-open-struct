@@ -1,18 +1,15 @@
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-
 require 'rspec'
 require 'pry'
 require 'simplecov'
 require 'coveralls'
-
-Coveralls.wear!
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
     SimpleCov::Formatter::HTMLFormatter,
     Coveralls::SimpleCov::Formatter
 ]
 SimpleCov.start
+
+require 'fancy-open-struct'
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.

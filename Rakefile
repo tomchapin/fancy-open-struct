@@ -18,8 +18,6 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-task :default => :spec
-
 task :fix_permissions do
   File.umask 0022
   filelist = `git ls-files`.split("\n")
@@ -28,3 +26,5 @@ task :fix_permissions do
 end
 
 task :build => :fix_permissions
+
+task :default => :spec
