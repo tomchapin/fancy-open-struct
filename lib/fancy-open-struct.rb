@@ -1,6 +1,8 @@
 require 'ostruct'
 require 'forwardable'
 
+require 'fancy-open-struct/version'
+
 class FancyOpenStruct < OpenStruct
 
   extend Forwardable

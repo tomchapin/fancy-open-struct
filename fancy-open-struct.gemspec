@@ -1,8 +1,6 @@
 # -*- encoding: utf-8 -*-
 
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'lib'))
-
-require 'fancy-open-struct/version'
+require './lib/fancy-open-struct/version'
 
 Gem::Specification.new do |s|
   s.name = "fancy-open-struct"
