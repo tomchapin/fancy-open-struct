@@ -79,7 +79,7 @@ describe FancyOpenStruct do
 
       describe 'The Hash table getter method, []' do
         it 'only accepts one argument' do
-          expect { fos[:key1, :key2] }.to raise_error(ArgumentError, 'wrong number of arguments (2 for 1)')
+          expect { fos[:key1, :key2] }.to raise_error(ArgumentError, /2 for 1/)
         end
 
         it "handles hash methods for setting values" do
@@ -100,7 +100,7 @@ describe FancyOpenStruct do
 
       describe 'The Hash table setter method, []=' do
         it 'only accepts two arguments' do
-          expect { fos[:key1, :key2] = :value }.to raise_error(ArgumentError, 'wrong number of arguments (3 for 2)')
+          expect { fos[:key1, :key2] = :value }.to raise_error(ArgumentError, /3 for 2/)
         end
       end
     end
