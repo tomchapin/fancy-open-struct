@@ -1,3 +1,7 @@
+0.3.0
+  - Deprecated the display_recursive_open_hash alias for debug_inspect
+  - Removed some unnecessary code from the to_h method
+
 0.2.0
   - Replaced the display_recursive_open_hash method with functionality from the awesome_print gem.
   - Aliased the display_recursive_open_hash method to the debug_inspect method.

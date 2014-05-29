@@ -275,11 +275,6 @@ describe FancyOpenStruct do
         fos.debug_inspect(:indent => 1, :plain => true)
       end
       debug_inspect.string.should == expected_result
-
-      display_recursive_open_hash = capture_stdout do
-        fos.display_recursive_open_hash(:indent => 1, :plain => true)
-      end
-      display_recursive_open_hash.string.should == expected_result
     end
 
     it "creates nested objects via subclass" do
@@ -293,10 +288,6 @@ describe FancyOpenStruct do
     describe 'method aliases' do
       it 'responds to #to_hash' do
         FancyOpenStruct.new.respond_to?(:to_hash).should be_true
-      end
-
-      it 'responds to #display_recursive_open_hash' do
-        FancyOpenStruct.new.respond_to?(:display_recursive_open_hash).should be_true
       end
     end
   end # additionnel features

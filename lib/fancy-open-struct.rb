@@ -59,8 +59,6 @@ class FancyOpenStruct < OpenStruct
         newval.to_h
       elsif newval.kind_of?(Array)
         newval.map { |a| a.kind_of?(self.class) ? a.to_h : a }
-      else
-        raise "Cached value of unsupported type: #{newval.inspect}"
       end
     end
   end
@@ -72,8 +70,6 @@ class FancyOpenStruct < OpenStruct
     # The awesome_print gem can be found at https://rubygems.org/gems/awesome_print
     ap(@table, options)
   end
-
-  alias_method :display_recursive_open_hash, :debug_inspect
 
   # Hash getter method which translates the key to a Symbol
   def [](key)
