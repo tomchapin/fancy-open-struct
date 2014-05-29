@@ -1,10 +1,5 @@
 language: ruby
 rvm:
-    # Rubies 2.1.2
   - 2.1.2
-
-  # Rubies 2.0.0
   - 2.0.0
-
-  # Rubies 1.9.x
   - 1.9.3
