@@ -49,9 +49,11 @@ describe FancyOpenStruct do
   describe "improvements on OpenStruct" do
 
     it "can be converted back to a hash" do
-      h = {:asdf => 'John Smith'}
+      blank_obj = Object.new
+      h = {:asdf => 'John Smith', :foo => [{:bar => blank_obj}, {:baz => nil}]}
       fos = FancyOpenStruct.new(h)
       fos.to_h.should == h
+      fos.to_hash.should == h
     end
 
     describe 'hash methods' do
@@ -286,6 +288,16 @@ describe FancyOpenStruct do
       fossc = FancyOpenStructSubClass.new({:one => [{:two => :three}]}, recurse_over_arrays: true)
 
       fossc.one.first.class.should == FancyOpenStructSubClass
+    end
+
+    describe 'method aliases' do
+      it 'responds to #to_hash' do
+        FancyOpenStruct.new.respond_to?(:to_hash).should be_true
+      end
+
+      it 'responds to #display_recursive_open_hash' do
+        FancyOpenStruct.new.respond_to?(:display_recursive_open_hash).should be_true
+      end
     end
   end # additionnel features
 
