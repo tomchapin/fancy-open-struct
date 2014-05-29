@@ -1,3 +1,6 @@
+0.4.1
+  - Removed unnecessary line of code in the build_sub_elements_key_cache method
+
 0.4.0
   - Changed ostruct methods (new_ostruct_member, recurse_over_array) so that they are private
   - Overhauled the caching sub-system and how values are set and retrieved to fix a bug with values not updating

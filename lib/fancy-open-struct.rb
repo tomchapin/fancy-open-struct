@@ -89,7 +89,6 @@ class FancyOpenStruct < OpenStruct
     else
       @sub_elements[name] = value
     end
-    @sub_elements[name]
   end
 
   def recurse_over_array(array)
