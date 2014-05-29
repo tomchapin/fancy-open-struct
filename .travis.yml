@@ -8,4 +8,3 @@ rvm:
 
   # Rubies 1.9.x
   - 1.9.3
-  - jruby-19mode # JRuby in 1.9 mode
