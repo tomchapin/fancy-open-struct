@@ -1,6 +1,5 @@
 0.2.0
   - Replaced the display_recursive_open_hash method with functionality from the awesome_print gem.
-    Note: This fundamentally changes the way how this method operates, and is not backwards compatible.
   - Aliased the display_recursive_open_hash method to the debug_inspect method.
   - Changed method_missing so that it is private
 
