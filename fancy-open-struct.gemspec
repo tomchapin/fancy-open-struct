@@ -2,17 +2,18 @@
 
 require './lib/fancy-open-struct/version'
 
-Gem::Specification.new do |s|
-  s.name = "fancy-open-struct"
-  s.version = FancyOpenStruct::VERSION
-  s.authors = ["Thomas H. Chapin"]
-  s.email = "tchapin@gmail.com"
-  s.date = Time.now.utc.strftime("%Y-%m-%d")
-  s.homepage = "http://github.com/tomchapin/fancy-open-struct"
-  s.licenses = ["MIT"]
+Gem::Specification.new do |spec|
 
-  s.summary = "OpenStruct subclass that returns nested hash attributes as FancyOpenStructs"
-  s.description = <<-QUOTE.gsub(/^    /, '')
+  spec.name = "fancy-open-struct"
+  spec.version = FancyOpenStruct::VERSION
+  spec.authors = ["Thomas H. Chapin"]
+  spec.email = "tchapin@gmail.com"
+  spec.date = Time.now.utc.strftime("%Y-%m-%d")
+  spec.homepage = "http://github.com/tomchapin/fancy-open-struct"
+  spec.licenses = ["MIT"]
+
+  spec.summary = "OpenStruct subclass that returns nested hash attributes as FancyOpenStructs"
+  spec.description = <<-QUOTE.gsub(/^    /, '')
     FancyOpenStruct is a subclass of OpenStruct, and is a variant of RecursiveOpenStruct.
     This allows you to convert nested hashes into a structure where keys and values can be
     navigated and modified via dot-syntax, like: foo.bar = :something. This particular gem
@@ -21,24 +22,29 @@ Gem::Specification.new do |s|
 
   QUOTE
 
-  s.files = `git ls-files`.split("\n")
-  s.test_files = `git ls-files spec`.split("\n")
-  s.require_paths = ["lib"]
-  s.extra_rdoc_files = [
+  spec.files = `git ls-files`.split("\n")
+  spec.test_files = `git ls-files spec`.split("\n")
+  spec.require_paths = ["lib"]
+  spec.extra_rdoc_files = [
       "LICENSE.txt",
+      "CHANGELOG",
       "README.rdoc"
   ]
 
-  s.add_development_dependency "bundler"
-  s.add_development_dependency "rake"
-  s.add_development_dependency "rspec"
-  s.add_development_dependency "rdoc"
-  s.add_development_dependency "pry"
-  s.add_development_dependency "coveralls"
-  s.add_development_dependency "guard"
-  s.add_development_dependency "guard-rspec"
-  s.add_development_dependency "guard-bundler"
-  s.add_development_dependency "simplecov-multi"
+  spec.required_ruby_version = '>= 1.9.3'
+
+  spec.add_dependency "awesome_print"
+
+  spec.add_development_dependency "bundler"
+  spec.add_development_dependency "rake"
+  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "rdoc"
+  spec.add_development_dependency "pry"
+  spec.add_development_dependency "coveralls"
+  spec.add_development_dependency "guard"
+  spec.add_development_dependency "guard-rspec"
+  spec.add_development_dependency "guard-bundler"
+  spec.add_development_dependency "simplecov-multi"
 
 end
 

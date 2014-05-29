@@ -47,6 +47,7 @@ describe FancyOpenStruct do
   end # describe behavior it inherits from OpenStruct
 
   describe "improvements on OpenStruct" do
+
     it "can be converted back to a hash" do
       h = {:asdf => 'John Smith'}
       fos = FancyOpenStruct.new(h)
@@ -54,32 +55,16 @@ describe FancyOpenStruct do
     end
 
     describe 'hash methods' do
-      it "handles hash methods for setting values" do
-        fos = FancyOpenStruct.new
-        fos['blah'] = "John Smith"
-        fos[:foo] = "George Washington"
-        fos.blah.should == "John Smith"
-        fos.foo.should == "George Washington"
-      end
 
-      it 'converts string hash keys to symbols' do
-        fos = FancyOpenStruct.new
-        fos['blah'] = "John Smith"
-        fos['blah'].should == "John Smith"
-        fos[:blah].should == "John Smith"
-        fos.blah.should == "John Smith"
-        fos.to_h['blah'].should == nil
-      end
+      let(:fos) { FancyOpenStruct.new }
 
       it 'forwards all of the basic Hash methods directly to the @table instance variable' do
-        fos = FancyOpenStruct.new
         Hash.instance_methods(false).each do |method_name|
           fos.respond_to?(method_name).should be_true
         end
       end
 
       it 'recovers gracefully even when the internal hash @table is directly modified via hash methods' do
-        fos = FancyOpenStruct.new
         fos.foo = 'bar'
         fos.to_h.should == {:foo => "bar"}
         other_hash = {:baz => :qux}
@@ -90,6 +75,33 @@ describe FancyOpenStruct do
         fos.instance_variable_set :@table, {}
         fos.foo.should == nil
         fos.baz.should == nil
+      end
+
+      describe 'The Hash table getter method, []' do
+        it 'only accepts one argument' do
+          expect { fos[:key1, :key2] }.to raise_error(ArgumentError, 'wrong number of arguments (2 for 1)')
+        end
+
+        it "handles hash methods for setting values" do
+          fos['blah'] = "John Smith"
+          fos[:foo] = "George Washington"
+          fos.blah.should == "John Smith"
+          fos.foo.should == "George Washington"
+        end
+
+        it 'converts string hash keys to symbols' do
+          fos['blah'] = "John Smith"
+          fos['blah'].should == "John Smith"
+          fos[:blah].should == "John Smith"
+          fos.blah.should == "John Smith"
+          fos.to_h['blah'].should == nil
+        end
+      end
+
+      describe 'The Hash table setter method, []=' do
+        it 'only accepts two arguments' do
+          expect { fos[:key1, :key2] = :value }.to raise_error(ArgumentError, 'wrong number of arguments (3 for 2)')
+        end
       end
     end
 
@@ -169,7 +181,6 @@ describe FancyOpenStruct do
       end
     end
 
-
     describe 'recursing over arrays' do
       let(:blah_list) { [{:foo => '1'}, {:foo => '2'}, 'baz'] }
       let(:h) { {:blah => blah_list} }
@@ -182,11 +193,11 @@ describe FancyOpenStruct do
         it { subject.blah[1].foo.should == '2' }
         it { subject.blah_as_a_hash.should == blah_list }
         it { subject.blah[2].should == 'baz' }
-        it "Retains changes acfoss Array lookups" do
+        it "Retains changes across Array look-ups" do
           subject.blah[1].foo = "Dr Scott"
           subject.blah[1].foo.should == "Dr Scott"
         end
-        it "propagates the changes through to .to_h acfoss Array lookups" do
+        it "propagates the changes through to .to_h across Array look-ups" do
           subject.blah[1].foo = "Dr Scott"
           subject.to_h.should == {
               :blah => [{:foo => '1'}, {:foo => "Dr Scott"}, 'baz']
@@ -198,7 +209,7 @@ describe FancyOpenStruct do
           subject { FancyOpenStruct.new(deep_hash, :recurse_over_arrays => true) }
 
           it { subject.foo.blah.length.should == 3 }
-          it "Retains changes acfoss Array lookups" do
+          it "Retains changes across Array look-ups" do
             subject.foo.blah[1].foo = "Dr Scott"
             subject.foo.blah[1].foo.should == "Dr Scott"
           end
@@ -211,7 +222,7 @@ describe FancyOpenStruct do
 
           it { subject.blah.length.should == 1 }
           it { subject.blah[0].length.should == 3 }
-          it "Retains changes acfoss Array lookups" do
+          it "Retains changes across Array look-ups" do
             subject.blah[0][1].foo = "Dr Scott"
             subject.blah[0][1].foo.should == "Dr Scott"
           end
@@ -233,68 +244,40 @@ describe FancyOpenStruct do
 
   describe "additional features" do
 
-    before(:each) do
-      h1 = {:a => 'a'}
-      h2 = {:a => 'b', :h1 => h1}
-      h1[:h2] = h2
-      @fos = FancyOpenStruct.new(h2)
-    end
+    it "should have a simple way of display complex FancyOpenStruct data" do
+      h = {
+          :blah => {
+              :blargh => 'Brad'
+          },
+          'example_string' => {
+              :foo => :bar,
+              :baz => {'qux' => :zam}
+          }
+      }
+      fos = FancyOpenStruct.new(h)
 
-    it "should have a simple way of display" do
-      @output = <<-QUOTE
-a = "b"
-h1.
-  a = "a"
-  h2.
-    a = "b"
-    h1.
-      a = "a"
-      h2.
-        a = "b"
-        h1.
-          a = "a"
-          h2.
-            a = "b"
-            h1.
-              a = "a"
-              h2.
-                a = "b"
-                h1.
-                  a = "a"
-                  h2.
-                    a = "b"
-                    h1.
-                      a = "a"
-                      h2.
-                        (recursion limit reached)
-      QUOTE
-      @io = StringIO.new
-      @fos.debug_inspect(@io)
-      @io.string.should match /^a = "b"$/
-      @io.string.should match /^h1\.$/
-      @io.string.should match /^  a = "a"$/
-      @io.string.should match /^  h2\.$/
-      @io.string.should match /^    a = "b"$/
-      @io.string.should match /^    h1\.$/
-      @io.string.should match /^      a = "a"$/
-      @io.string.should match /^      h2\.$/
-      @io.string.should match /^        a = "b"$/
-      @io.string.should match /^        h1\.$/
-      @io.string.should match /^          a = "a"$/
-      @io.string.should match /^          h2\.$/
-      @io.string.should match /^            a = "b"$/
-      @io.string.should match /^            h1\.$/
-      @io.string.should match /^              a = "a"$/
-      @io.string.should match /^              h2\.$/
-      @io.string.should match /^                a = "b"$/
-      @io.string.should match /^                h1\.$/
-      @io.string.should match /^                  a = "a"$/
-      @io.string.should match /^                  h2\.$/
-      @io.string.should match /^                    a = "b"$/
-      @io.string.should match /^                    h1\.$/
-      @io.string.should match /^                      a = "a"$/
-      @io.string.should match /^                      h2\.$/
-      @io.string.should match /^                        \(recursion limit reached\)$/
+      expected_result = "{" + \
+                        "\n           :blah => {" + \
+                        "\n  :blargh => \"Brad\"" + \
+                        "\n }," + \
+                        "\n :example_string => {" + \
+                        "\n  :foo => :bar," + \
+                        "\n  :baz => {" + \
+                        "\n   \"qux\" => :zam" + \
+                        "\n  }" + \
+                        "\n }" + \
+                        "\n}" + \
+                        "\n"
+
+      debug_inspect = capture_stdout do
+        fos.debug_inspect(:indent => 1, :plain => true)
+      end
+      debug_inspect.string.should == expected_result
+
+      display_recursive_open_hash = capture_stdout do
+        fos.display_recursive_open_hash(:indent => 1, :plain => true)
+      end
+      display_recursive_open_hash.string.should == expected_result
     end
 
     it "creates nested objects via subclass" do
