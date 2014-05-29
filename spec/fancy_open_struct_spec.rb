@@ -127,6 +127,18 @@ describe FancyOpenStruct do
         fos.to_h.should == {:blah => "John Smith"}
         fos[:blah].should == "John Smith"
       end
+
+      it 'lets you access keys via strings or symbols' do
+        h = {'blah' => 'John Smith'}
+        fos = FancyOpenStruct.new(h)
+        fos.to_h.should == {:blah => "John Smith"}
+        fos['blah'].should == "John Smith"
+        fos['foo'] = 'bar'
+        fos.foo.should == 'bar'
+        fos[:foo].should == 'bar'
+        fos['foo'].should == 'bar'
+        fos.to_h.should == {:blah => "John Smith", :foo => 'bar'}
+      end
     end
   end
 
@@ -216,6 +228,32 @@ describe FancyOpenStruct do
             subject.foo.blah[1].foo.should == "Dr Scott"
           end
 
+          it 'recurses and updates both shallow and deep values if they are changed' do
+            fos = FancyOpenStruct.new({}, :recurse_over_arrays => true)
+            deep_array_hash = [
+                {
+                    :foo =>
+                        {:bar => :baz}
+                },
+                {
+                    :qux => [
+                        {:zap => :zam}, {:zip => :boop}
+                    ]
+                }
+            ]
+            fos.bar = deep_array_hash
+            fos.bar[0].foo.bar.should == :baz
+            fos.bar[1].qux[0].zap.should == :zam
+            fos.bar[1].qux[0].zap = :changed1
+            fos.bar[1].qux[0].zap.should == :changed1
+            fos.bar[1].qux[1].zip.should == :boop
+            fos.bar[1].qux[1].zip = :changed2
+            fos.bar[1].qux[1].zip.should == :changed2
+            fos.bar = {:qux_new => [{:zap => :zam}, {:zip => :boop}]}
+            fos.bar.qux.should be_nil
+            fos.bar.qux_new[0].zap.should == :zam
+            fos.bar.qux_new[1].zip.should == :boop
+          end
         end
 
         context "when array is in an array" do
@@ -283,6 +321,13 @@ describe FancyOpenStruct do
       fossc = FancyOpenStructSubClass.new({:one => [{:two => :three}]}, recurse_over_arrays: true)
 
       fossc.one.first.class.should == FancyOpenStructSubClass
+    end
+
+    it 'returns nil for missing keys' do
+      fos = FancyOpenStruct.new {}
+      fos.foo.should be_nil
+      fos['bar'].should be_nil
+      fos[:baz].should be_nil
     end
 
     describe 'method aliases' do

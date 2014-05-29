@@ -22,43 +22,14 @@ class FancyOpenStruct < OpenStruct
     @sub_elements = {}
   end
 
-  def new_ostruct_member(name)
-    name = name.to_sym
-    unless self.respond_to?(name)
-      define_singleton_method name do
-        v = @table[name]
-        if v.is_a?(Hash)
-          @sub_elements[name] ||= self.class.new(v, :recurse_over_arrays => @recurse_over_arrays)
-        elsif v.is_a?(Array) and @recurse_over_arrays
-          @sub_elements[name] ||= recurse_over_array v
-        else
-          v
-        end
-      end
-      define_singleton_method("#{name}=") { |x| modifiable[name] = x }
-      define_singleton_method("#{name}_as_a_hash") { @table[name] }
-    end
-    name
-  end
-
-  def recurse_over_array(array)
-    array.map do |a|
-      if a.is_a? Hash
-        self.class.new(a, :recurse_over_arrays => true)
-      elsif a.is_a? Array
-        recurse_over_array a
-      else
-        a
-      end
-    end
-  end
-
   def to_h
     @table.dup.update(@sub_elements) do |k, oldval, newval|
       if newval.kind_of?(self.class)
         newval.to_h
       elsif newval.kind_of?(Array)
         newval.map { |a| a.kind_of?(self.class) ? a.to_h : a }
+      else
+        newval
       end
     end
   end
@@ -73,16 +44,65 @@ class FancyOpenStruct < OpenStruct
 
   # Hash getter method which translates the key to a Symbol
   def [](key)
-    @table[key.to_sym]
+    key = key.to_sym unless key.kind_of? Symbol
+    @table[key]
   end
 
   # Hash setter method which translates the key to a Symbol and also creates
   # a getter method (OpenStruct member) for accessing the key/value later via dot syntax
   def []=(key, value)
-    modifiable[new_ostruct_member(key.to_sym)] = value
+    key = key.to_sym unless key.kind_of? Symbol
+    modifiable[new_ostruct_member(key)] = value
+    build_sub_elements_key_cache(key)
   end
 
   private
+
+  def new_ostruct_member(name)
+    name = name.to_sym
+    unless self.respond_to?(name)
+      define_singleton_method name do
+        value = @table[name]
+        if value.is_a?(Hash)
+          @sub_elements[name] ||= self.class.new(value, :recurse_over_arrays => @recurse_over_arrays)
+        elsif value.is_a?(Array) and @recurse_over_arrays
+          @sub_elements[name] ||= recurse_over_array value
+        else
+          value
+        end
+      end
+      define_singleton_method("#{name}=") do |x|
+        modifiable[name] = x
+        build_sub_elements_key_cache(name)
+      end
+      define_singleton_method("#{name}_as_a_hash") { @table[name] }
+    end
+    name
+  end
+
+  def build_sub_elements_key_cache(name)
+    value = @table[name]
+    if value.is_a?(Hash)
+      @sub_elements[name] = self.class.new(value, :recurse_over_arrays => @recurse_over_arrays)
+    elsif value.is_a?(Array) and @recurse_over_arrays
+      @sub_elements[name] = recurse_over_array value
+    else
+      @sub_elements[name] = value
+    end
+    @sub_elements[name]
+  end
+
+  def recurse_over_array(array)
+    array.map do |a|
+      if a.is_a? Hash
+        self.class.new(a, :recurse_over_arrays => true)
+      elsif a.is_a? Array
+        recurse_over_array a
+      else
+        a
+      end
+    end
+  end
 
   # Dynamically handle any attempts to get or set values via dot syntax
   # if the OpenStruct member methods haven't already been created
@@ -93,10 +113,13 @@ class FancyOpenStruct < OpenStruct
       raise ArgumentError, "wrong number of arguments (#{len} for 1)", caller(1) if len != 1
       # Set up an instance method to point to the key/value in the table and set the value
       modifiable[new_ostruct_member(mname.to_sym)] = args[0]
+      build_sub_elements_key_cache(mname.to_sym)
+      @table[mname.to_sym]
     elsif @table.has_key?(mid)
       # The table has apparently been modified externally, so we need to set up
       # an instance method to point to the key/value in the table.
       new_ostruct_member(mname.to_sym)
+      build_sub_elements_key_cache(mname.to_sym)
       self.send(mid)
     else
       nil

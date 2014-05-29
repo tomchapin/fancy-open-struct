@@ -1,3 +1,7 @@
+0.4.0
+  - Changed ostruct methods (new_ostruct_member, recurse_over_array) so that they are private
+  - Overhauled the caching sub-system and how values are set and retrieved to fix a bug with values not updating
+
 0.3.0
   - Deprecated the display_recursive_open_hash alias for debug_inspect
   - Removed some unnecessary code from the to_h method
