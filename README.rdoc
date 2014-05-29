@@ -4,6 +4,7 @@
 {<img src="http://allthebadges.io/tomchapin/fancy-open-struct/gemnasium.png" alt="Dependencies" />}[http://allthebadges.io/tomchapin/fancy-open-struct/gemnasium]
 {<img src="http://allthebadges.io/tomchapin/fancy-open-struct/travis.png" alt="Build Status" />}[http://allthebadges.io/tomchapin/fancy-open-struct/travis]
 {<img src="http://allthebadges.io/tomchapin/fancy-open-struct/coveralls.png" alt="Coverage" />}[http://allthebadges.io/tomchapin/fancy-open-struct/coveralls]
+{<img src="http://allthebadges.io/tomchapin/fancy-open-struct/code_climate.png" alt="Code Climate" />}[http://allthebadges.io/tomchapin/fancy-open-struct/code_climate]
 
 FancyOpenStruct is a subclass of OpenStruct, and is a variant of RecursiveOpenStruct.
 
